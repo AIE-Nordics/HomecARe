@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="AppTheme.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:colorEdgeEffect">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+    <style name="Theme.BT_Glass_Client" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:colorEdgeEffect">@android:color/white</item>
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+</resources>
