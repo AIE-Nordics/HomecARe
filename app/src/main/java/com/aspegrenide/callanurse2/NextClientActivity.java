@@ -48,6 +48,10 @@ public class NextClientActivity extends AppCompatActivity implements GlassGestur
             case SWIPE_BACKWARD:
                 Log.d(TAG, "swipe backward");
                 return true;
+            case TWO_FINGER_SWIPE_DOWN:
+                Log.d(TAG, "two finger swipe down");
+                this.finish();
+                return true;
             default:
                 return false;
         }
