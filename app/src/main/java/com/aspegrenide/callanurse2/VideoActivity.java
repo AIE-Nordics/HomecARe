@@ -28,6 +28,7 @@ import com.aspegrenide.callanurse2.GlassGestureDetector.Gesture;
 
 public class VideoActivity extends AppCompatActivity implements GlassGestureDetector.OnGestureListener {
     private static final String TAG = "VIDEO_ACT";
+    private boolean ACTIVE = false;
     private GlassGestureDetector glassGestureDetector;
 
     // Fill the App ID of your project generated on Agora Console.
@@ -71,7 +72,8 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
         switch (gesture) {
             case TAP:
                 Log.d(TAG, "tap");
-                initializeAndJoinChannel();
+                //initializeAndJoinChannel();
+                togglePauseResume();
                 return true;
             case SWIPE_FORWARD:
                 Log.d(TAG, "swipe forward");
@@ -181,10 +183,22 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
         // You need to specify the user ID yourself, and ensure that it is unique in the channel.
         mRtcEngine.joinChannel(videoCallToken, channelName, 0, options);
     }
-
     protected void onDestroy() {
         super.onDestroy();
         leave();
+    }
+
+    private void togglePauseResume() {
+        Log.d(TAG,"state is " + ACTIVE);
+        if(ACTIVE) {
+            mRtcEngine.pauseAllChannelMediaRelay();
+            ACTIVE = false;
+            Log.d(TAG,"pause - then state is " + ACTIVE);
+            return;
+        }
+        mRtcEngine.resumeAllChannelMediaRelay();
+        ACTIVE = true;
+        Log.d(TAG,"resume, then state is " + ACTIVE);
     }
 
     private void leave() {

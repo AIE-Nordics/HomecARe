@@ -110,6 +110,9 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
     public boolean onGesture(GlassGestureDetector.Gesture gesture) {
         Log.d(TAG, "tap");
         switch (gesture) {
+            case TAP_AND_HOLD:
+                Log.d(TAG, "tap and hold");
+                return true;
             case TAP:
                 Log.d(TAG, "tap");
                 callNextClientActivity();
@@ -139,8 +142,6 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
         startActivity(intent);
     }
 
-    //web // 007eJxTYOCb4yO7LL71UE6ZbeDCaZ+X9IcLXgvfUsXC+LFXxfvBTlUFhhQLY3OL1KSURANzAxPDVEuLxGST5KRUA4tUE8MUA5NUfk/r5ImzbJKnOHAwMzJAIIjPzeCcmJOTmFdaVJxqxMAAAOW5IbE=
-    //log // 007eJxTYOCb4yO7LL71UE6ZbeDCaZ+X9IcLXgvfUsXC+LFXxfvBTlUFhhQLY3OL1KSURANzAxPDVEuLxGST5KRUA4tUE8MUA5NUfk/r5ImzbJKnOHAwMzJAIIjPzeCcmJOTmFdaVJxqxMAAAOW5IbE=
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
