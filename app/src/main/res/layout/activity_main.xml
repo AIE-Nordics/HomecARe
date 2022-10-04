@@ -8,13 +8,13 @@
 
     <ImageView
         android:id="@+id/imgBtStatus"
-        android:layout_width="100dp"
+        android:layout_width="80dp"
         android:layout_height="100dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/btoff" />
+        app:srcCompat="@drawable/btgrey" />
 
     <TextView
         android:id="@+id/tvBt"
@@ -27,24 +27,45 @@
         app:layout_constraintTop_toTopOf="@+id/imgBtStatus" />
 
     <TextView
+        android:id="@+id/tvTokenStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Video token"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="@+id/tvServer"
+        app:layout_constraintTop_toTopOf="@+id/imgTokenStatus" />
+
+    <TextView
+        android:id="@+id/tvWiFiStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="Waiting for WiFi "
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toEndOf="@+id/imgWiFiState"
+        app:layout_constraintTop_toTopOf="@+id/imgWiFiState" />
+
+    <TextView
         android:id="@+id/tvServer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:text="Server"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintStart_toStartOf="@+id/imgBtStatus"
-        app:layout_constraintTop_toBottomOf="@+id/imgBtStatus" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintStart_toStartOf="@+id/tvBt"
+        app:layout_constraintTop_toBottomOf="@+id/tvBt" />
 
     <Button
         android:id="@+id/btnSend"
         android:layout_width="163dp"
         android:layout_height="60dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
         android:onClick="btnSendOnClick"
         android:text="Send"
         app:layout_constraintStart_toStartOf="@+id/imgBtStatus"
-        app:layout_constraintTop_toBottomOf="@+id/tvServer" />
+        app:layout_constraintTop_toBottomOf="@+id/imgWiFiState" />
 
     <Button
         android:id="@+id/btnRestart"
@@ -52,7 +73,26 @@
         android:layout_height="60dp"
         android:layout_marginStart="24dp"
         android:onClick="btnRestartOnClick"
-        android:text="Restart"
+        android:text="Restart server"
         app:layout_constraintStart_toEndOf="@+id/btnSend"
         app:layout_constraintTop_toTopOf="@+id/btnSend" />
+
+    <ImageView
+        android:id="@+id/imgTokenStatus"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/imgBtStatus"
+        app:layout_constraintStart_toStartOf="@+id/imgBtStatus"
+        app:layout_constraintTop_toBottomOf="@+id/imgBtStatus"
+        app:srcCompat="@drawable/vid_cam_grey" />
+
+    <ImageView
+        android:id="@+id/imgWiFiState"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/imgTokenStatus"
+        app:layout_constraintTop_toBottomOf="@+id/imgTokenStatus"
+        app:srcCompat="@drawable/wifi_grey" />
 </androidx.constraintlayout.widget.ConstraintLayout>

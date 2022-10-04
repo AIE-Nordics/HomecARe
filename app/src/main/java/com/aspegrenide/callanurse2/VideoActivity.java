@@ -27,7 +27,7 @@ import android.widget.Toast;
 import com.aspegrenide.callanurse2.GlassGestureDetector.Gesture;
 
 public class VideoActivity extends AppCompatActivity implements GlassGestureDetector.OnGestureListener {
-    private static final String TAG = "VIDEO_ACT";
+    private static final String TAG = "MAIN_ACT";
     private boolean ACTIVE = false;
     private GlassGestureDetector glassGestureDetector;
 
@@ -36,7 +36,8 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
     // Fill the channel name.
     private String channelName = "callanurse2";
     // Fill the temp token generated on Agora Console.
-    private String videoCallToken = null;  //"007eJxTYLgsdtP2eOL0F0cumv9P2yXHk/tf3jHTNrH2zg1vvr5L6XwKDCkWxuYWqUkpiQbmBiaGqZYWickmyUmpBhapJoYpBiap2nWWyavOWyXffrWeiZEBAkF8bobkxJycxLzSouJUIwYGAL7QJZ0=";
+    private String videoCallToken = null; //"007eJxTYPinKC7hIXpIcEfVe0O7eKFZshH6Imfa5vLdlRNVVPspIqDAkGJhbG6RmpSSaGBuYGKYammRmGySnJRqYJFqYphiYJL6oM8mOeGBbbKO6iJmRgYIBPG5GZITc3IS80qLilONGBgA90wfzg==";
+    // 007eJxTYPinKC7hIXpIcEfVe0O7eKFZshH6Imfa5vLdlRNVVPspIqDAkGJhbG6RmpSSaGBuYGKYammRmGySnJRqYJFqYphiYJL6oM8mOeGBbbKO6iJmRgYIBPG5GZITc3IS80qLilONGBgA90wfzg==
 
     private RtcEngine mRtcEngine;
 
@@ -72,8 +73,8 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
         switch (gesture) {
             case TAP:
                 Log.d(TAG, "tap");
-                //initializeAndJoinChannel();
-                togglePauseResume();
+                initializeAndJoinChannel();
+                //togglePauseResume();
                 return true;
             case SWIPE_FORWARD:
                 Log.d(TAG, "swipe forward");
@@ -122,13 +123,16 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
         @Override
         // Listen for the remote host joining the channel to get the uid of the host.
         public void onUserJoined(int uid, int elapsed) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // Call setupRemoteVideo to set the remote video view after getting uid from the onUserJoined callback.
-                setupRemoteVideo(uid);
-            }
-        });
+            Log.d(TAG, "++++ onUserJoined - calling setupRemoteVideo");
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Log.d(TAG, "onUserJoined - calling setupRemoteVideo");
+                    // Call setupRemoteVideo to set the remote video view after getting uid from the onUserJoined callback.
+                    setupRemoteVideo(uid);
+                }
+            });
         }
     };
 
@@ -220,9 +224,11 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
     }
 
     private void setupRemoteVideo(int uid) {
+        Log.d(TAG, "init setupRemoteVideo");
         FrameLayout container = findViewById(R.id.remote_video_view_container);
         SurfaceView surfaceView = new SurfaceView(getBaseContext());
         container.addView(surfaceView);
         mRtcEngine.setupRemoteVideo(new VideoCanvas(surfaceView, VideoCanvas.RENDER_MODE_FIT, uid));
+        Log.d(TAG, "leaving setupRemoteVideo");
     }
 }

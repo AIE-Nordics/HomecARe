@@ -13,6 +13,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -58,8 +62,11 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
     private String videoCallToken;
 
     ImageView imgBtStatus;
+    ImageView imgTokenStatus;
     TextView tvBtState;
-    ImageView imgServerState;
+    TextView tvTokenStatus;
+    ImageView imgWiFiState;
+    TextView tvWiFiStatus;
     TextView tvServerState;
 
     private GlassGestureDetector glassGestureDetector;
@@ -72,10 +79,16 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
         Log.d(TAG, "Prepare for gestures");
         glassGestureDetector = new GlassGestureDetector(this, this);
 
+
+        tvTokenStatus = findViewById(R.id.tvTokenStatus);
+        imgTokenStatus = findViewById(R.id.imgTokenStatus);
         imgBtStatus = findViewById(R.id.imgBtStatus);
         tvBtState = findViewById(R.id.tvBt);
-        //imgServerState = findViewById(R.id.imgServerState);
+        imgWiFiState = findViewById(R.id.imgWiFiState);
+        tvWiFiStatus = findViewById(R.id.tvWiFiStatus);
         tvServerState = findViewById(R.id.tvServer);
+
+        setTokenState(false);
 
         // check BT
         if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled()) {
@@ -91,6 +104,10 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
             tvBtState.setText("Active");
         }
 
+        // check wifi
+        boolean wifiConnected = checkWiFiConnection();
+        setWiFiState(wifiConnected);
+
         // Register for broadcasts on BluetoothAdapter state change
         IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
         registerReceiver(mReceiver, filter);
@@ -99,7 +116,21 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
         setServerState(DEACTIVE, null);
 
         setupConnection();
+    }
 
+    private boolean checkWiFiConnection() {
+        WifiManager wifiMgr = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+
+        if (wifiMgr.isWifiEnabled()) { // Wi-Fi adapter is ON
+            WifiInfo wifiInfo = wifiMgr.getConnectionInfo();
+            if( wifiInfo.getNetworkId() == -1 ){
+                return false; // Not connected to an access point
+            }
+            return true; // Connected to an access point
+        }
+        else {
+            return false; // Wi-Fi adapter is OFF
+        }
     }
 
     @Override
@@ -112,10 +143,6 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
         switch (gesture) {
             case TAP_AND_HOLD:
                 Log.d(TAG, "tap and hold");
-                return true;
-            case TAP:
-                Log.d(TAG, "tap");
-                callNextClientActivity();
                 return true;
             case SWIPE_FORWARD:
                 Log.d(TAG, "swipe forward");
@@ -170,6 +197,26 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
         }
     };
 
+    private void setWiFiState(boolean connected) {
+        if(connected) {
+            imgWiFiState.setImageResource(R.drawable.wifi_blue);
+            tvWiFiStatus.setText("Wifi is connected");
+        } else {
+            imgTokenStatus.setImageResource(R.drawable.wifi_grey);
+            tvTokenStatus.setText("Waiting for wifi...");
+        }
+    }
+
+    private void setTokenState(boolean fetched) {
+        if(fetched) {
+            imgTokenStatus.setImageResource(R.drawable.vid_cam_blue);
+            tvTokenStatus.setText("Token for video call ok");
+        } else {
+            imgTokenStatus.setImageResource(R.drawable.vid_cam_grey);
+            tvTokenStatus.setText("Waiting for token...");
+        }
+    }
+
     private void setServerState(int state, String deviceName) {
         switch (state) {
             case DEACTIVE:
@@ -193,6 +240,7 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
     }
 
     private void setupConnection() {
+        Log.e(TAG, "int setupConnection() ");
         if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
             requestPermission(Manifest.permission.BLUETOOTH_CONNECT, REQUEST_BT_CONNECT_PERMISSION);
         }
@@ -240,6 +288,7 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
     }
 
     public void btnRestartOnClick(View view) {
+        Log.d(TAG, "restart buttonclicked");
         setServerState(DEACTIVE, null);
         mConnectedThread.cancel();
         setupConnection();
@@ -443,6 +492,7 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
             this.runOnUiThread(new Runnable() {
                 public void run() {
                     Toast.makeText(MainActivity.this, "token found: " + videoCallToken, Toast.LENGTH_SHORT).show();
+                    setTokenState(true);
                 }
             });
 

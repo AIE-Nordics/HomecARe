@@ -3,14 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/johan/OneDrive/Documents/AndroidStudioProjects/Callanurse2/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/johan/OneDrive/Documents/AndroidStudioProjects/Callanurse2/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/johan/OneDrive/Documents/AndroidStudioProjects/Callanurse2/app/src/main/res/layout/activity_main_2.xml" value="0.25" />
         <entry key="..\:/Users/johan/OneDrive/Documents/AndroidStudioProjects/Callanurse2/app/src/main/res/layout/activity_main_copy.xml" value="0.25" />
         <entry key="..\:/Users/johan/OneDrive/Documents/AndroidStudioProjects/Callanurse2/app/src/main/res/layout/activity_next_client.xml" value="0.13949275362318841" />
         <entry key="..\:/Users/johan/OneDrive/Documents/AndroidStudioProjects/Callanurse2/app/src/main/res/layout/layout.xml" value="0.2359375" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/activity_main_2.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_next_client.xml" value="0.25" />
       </map>
     </option>
   </component>
