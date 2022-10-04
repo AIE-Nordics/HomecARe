@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,10 +18,25 @@ public class NextClientActivity extends AppCompatActivity implements GlassGestur
     private GlassGestureDetector glassGestureDetector;
     private String videoCallToken;
 
+    private TextView tvClientName;
+    private TextView tvTask;
+    private TextView tvTaskWhen;
+    private ImageView imgClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_next_client);
+
+        tvClientName = findViewById(R.id.tvClientName);
+        tvTask = findViewById(R.id.tvTask);
+        tvTaskWhen = findViewById(R.id.tvTaskWhen);
+        imgClient = findViewById(R.id.imgClient);
+
+        tvClientName.setText("Ingrid Pålsson");
+        tvTaskWhen.setText("12:15, om tio minuter");
+        tvTask.setText("Laga lunch och ta medicin [tap for list]");
+        imgClient.setImageResource(R.drawable.oldwoman1);
 
         glassGestureDetector = new GlassGestureDetector(this, this);
 
@@ -47,14 +64,23 @@ public class NextClientActivity extends AppCompatActivity implements GlassGestur
                 return true;
             case SWIPE_BACKWARD:
                 Log.d(TAG, "swipe backward");
+                // open video
+                callMainActivity();
                 return true;
-            case TWO_FINGER_SWIPE_DOWN:
-                Log.d(TAG, "two finger swipe down");
+            case SWIPE_DOWN:
+                Log.d(TAG, "swipe down");
                 this.finish();
                 return true;
             default:
                 return false;
         }
+    }
+
+    private void callMainActivity() {
+        Log.d(TAG, "call main activity with token as extras");
+        Intent intent = new Intent(NextClientActivity.this, MainActivity.class);
+        intent.putExtra(TOKEN_KEY, videoCallToken);
+        startActivity(intent);
     }
 
     private void callVideoActivity() {

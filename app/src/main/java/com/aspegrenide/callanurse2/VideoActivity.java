@@ -82,8 +82,8 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
                 callNextClientActivity();
                // this.finish();
                 return true;
-            case TWO_FINGER_SWIPE_DOWN:
-                Log.d(TAG, "two finger swipe down");
+            case SWIPE_DOWN:
+                Log.d(TAG, "swipe down");
                 this.finish();
                 return true;
             default:

@@ -16,16 +16,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/btoff" />
 
-    <ImageView
-        android:id="@+id/imgServerState"
-        android:layout_width="78dp"
-        android:layout_height="85dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="@+id/imgBtStatus"
-        app:layout_constraintStart_toStartOf="@+id/imgBtStatus"
-        app:layout_constraintTop_toBottomOf="@+id/imgBtStatus"
-        app:srcCompat="@drawable/helpinghand" />
-
     <TextView
         android:id="@+id/tvBt"
         android:layout_width="wrap_content"
@@ -40,21 +30,21 @@
         android:id="@+id/tvServer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
         android:text="Server"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintStart_toEndOf="@+id/imgBtStatus"
-        app:layout_constraintTop_toTopOf="@+id/imgServerState" />
+        app:layout_constraintStart_toStartOf="@+id/imgBtStatus"
+        app:layout_constraintTop_toBottomOf="@+id/imgBtStatus" />
 
     <Button
         android:id="@+id/btnSend"
         android:layout_width="163dp"
         android:layout_height="60dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:onClick="btnSendOnClick"
         android:text="Send"
-        app:layout_constraintStart_toStartOf="@+id/imgServerState"
-        app:layout_constraintTop_toBottomOf="@+id/imgServerState" />
+        app:layout_constraintStart_toStartOf="@+id/imgBtStatus"
+        app:layout_constraintTop_toBottomOf="@+id/tvServer" />
 
     <Button
         android:id="@+id/btnRestart"

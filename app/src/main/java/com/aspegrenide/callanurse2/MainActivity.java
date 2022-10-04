@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
 
         imgBtStatus = findViewById(R.id.imgBtStatus);
         tvBtState = findViewById(R.id.tvBt);
-        imgServerState = findViewById(R.id.imgServerState);
+        //imgServerState = findViewById(R.id.imgServerState);
         tvServerState = findViewById(R.id.tvServer);
 
         // check BT
@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
         switch (gesture) {
             case TAP:
                 Log.d(TAG, "tap");
+                callNextClientActivity();
                 return true;
             case SWIPE_FORWARD:
                 Log.d(TAG, "swipe forward");
@@ -121,8 +122,8 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
             case SWIPE_BACKWARD:
                 Log.d(TAG, "swipe backward");
                 return true;
-            case TWO_FINGER_SWIPE_DOWN:
-                Log.d(TAG, "two finger swipe down");
+            case SWIPE_DOWN:
+                Log.d(TAG, "swipe down");
                 this.finish();
                 return true;
             default:
@@ -172,14 +173,14 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
         switch (state) {
             case DEACTIVE:
                 tvServerState.setText("Not active");
-                imgServerState.setImageResource(R.drawable.shh);
+                //imgServerState.setImageResource(R.drawable.shh);
                 break;
             case ACTIVE:
                 tvServerState.setText("Active");
-                imgServerState.setImageResource(R.drawable.ok);
+                //imgServerState.setImageResource(R.drawable.ok);
                 break;
             case CONNECTED:
-                imgServerState.setImageResource(R.drawable.handshake);
+                //imgServerState.setImageResource(R.drawable.handshake);
                 tvServerState.setText("Connected to " + deviceName);
                 break;
         }
