@@ -78,6 +78,7 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
                 return true;
             case SWIPE_FORWARD:
                 Log.d(TAG, "swipe forward");
+                leave();
                 callMakeNoteActivity();
                 return true;
             case SWIPE_BACKWARD:
@@ -187,9 +188,10 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
 
         // Join the channel with a temp token.
         // You need to specify the user ID yourself, and ensure that it is unique in the channel.
-        mRtcEngine.joinChannel(videoCallToken, channelName, 0, options);
+        mRtcEngine.joinChannel(videoCallToken, channelName, 9999, options);
     }
     protected void onDestroy() {
+        Log.d(TAG, "inDestroy");
         super.onDestroy();
         leave();
     }
