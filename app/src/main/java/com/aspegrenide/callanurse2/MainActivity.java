@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
             tvWiFiStatus.setText("Wifi is connected");
         } else {
             imgTokenStatus.setImageResource(R.drawable.wifi_grey);
-            tvTokenStatus.setText("Waiting for wifi...");
+            tvTokenStatus.setText("Waiting for token...");
         }
     }
 

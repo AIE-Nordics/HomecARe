@@ -78,11 +78,12 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
                 return true;
             case SWIPE_FORWARD:
                 Log.d(TAG, "swipe forward");
+                callMakeNoteActivity();
                 return true;
             case SWIPE_BACKWARD:
                 Log.d(TAG, "swipe backward");
                 leave();
-                callNextClientActivity();
+                callMakeNoteActivity();
                // this.finish();
                 return true;
             case SWIPE_DOWN:
@@ -94,12 +95,13 @@ public class VideoActivity extends AppCompatActivity implements GlassGestureDete
         }
     }
 
-    private void callNextClientActivity() {
+    private void callMakeNoteActivity() {
         Log.d(TAG, "call next client activity");
-        Intent intent = new Intent(VideoActivity.this, NextClientActivity.class);
+        Intent intent = new Intent(VideoActivity.this, MakeNoteActivity.class);
         intent.putExtra(TOKEN_KEY, videoCallToken);
         startActivity(intent);
     }
+
 
 
     @Override

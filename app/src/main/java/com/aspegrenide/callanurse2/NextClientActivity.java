@@ -59,12 +59,12 @@ public class NextClientActivity extends AppCompatActivity implements GlassGestur
                 return true;
             case SWIPE_FORWARD:
                 Log.d(TAG, "swipe forward");
-                // open video
-                callVideoActivity();
+                // open make note
+                callMakeNoteActivity();
                 return true;
             case SWIPE_BACKWARD:
                 Log.d(TAG, "swipe backward");
-                // open video
+                // go back to main
                 callMainActivity();
                 return true;
             case SWIPE_DOWN:
@@ -83,12 +83,13 @@ public class NextClientActivity extends AppCompatActivity implements GlassGestur
         startActivity(intent);
     }
 
-    private void callVideoActivity() {
-        Log.d(TAG, "call video activity with token as extras");
-        Intent intent = new Intent(NextClientActivity.this, VideoActivity.class);
+    private void callMakeNoteActivity() {
+        Log.d(TAG, "call next client activity");
+        Intent intent = new Intent(NextClientActivity.this, MakeNoteActivity.class);
         intent.putExtra(TOKEN_KEY, videoCallToken);
         startActivity(intent);
     }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
