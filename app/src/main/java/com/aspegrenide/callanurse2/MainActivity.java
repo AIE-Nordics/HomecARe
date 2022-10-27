@@ -88,6 +88,17 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
         tvWiFiStatus = findViewById(R.id.tvWiFiStatus);
         tvServerState = findViewById(R.id.tvServer);
 
+
+        // check if there is a known token to use for video call
+        Bundle extras = getIntent().getExtras();
+        Log.d(TAG, "extras = " + extras);
+        if (extras != null) {
+            videoCallToken = extras.getString(TOKEN_KEY);
+            //The key argument here must match that used in the other activity
+            Log.d(TAG, "videoCallToken received" + videoCallToken);
+        }
+
+
         setTokenState(false);
 
         // check BT

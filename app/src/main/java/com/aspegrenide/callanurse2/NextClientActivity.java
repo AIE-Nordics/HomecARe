@@ -35,7 +35,7 @@ public class NextClientActivity extends AppCompatActivity implements GlassGestur
 
         tvClientName.setText("Ingrid Pålsson");
         tvTaskWhen.setText("12:15, om tio minuter");
-        tvTask.setText("Laga lunch och ta medicin [tap for list]");
+        tvTask.setText("Laga lunch och ta medicin [tryck för lista]");
         imgClient.setImageResource(R.drawable.oldwoman1);
 
         glassGestureDetector = new GlassGestureDetector(this, this);

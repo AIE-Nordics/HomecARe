@@ -53,6 +53,7 @@
         <activity
             android:name=".MakeNoteActivity"
             android:exported="true"
+            android:process=":remote"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

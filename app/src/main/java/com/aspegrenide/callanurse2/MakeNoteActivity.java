@@ -24,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -32,6 +33,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
@@ -48,15 +50,11 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
     private String videoCallToken;
     private static final String TAG = "MAIN_ACT";
 
+    private static final int REQUEST_CODE = 999;
     public static final Integer RecordAudioRequestCode = 1;
-    private boolean RECORDING_ACTIVE = false;
-    private SpeechRecognizer speechRecognizer;
-    final Intent speechRecognizerIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
     private GlassGestureDetector glassGestureDetector;
-
-    private ImageView imgMic;
-    private TextView tvRecordingStatus;
+    private TextView tvSavedNotes;
     private TextView tvNote;
 
     @Override
@@ -64,9 +62,8 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_note);
 
-        imgMic = findViewById(R.id.imgMic);
-        tvRecordingStatus = findViewById(R.id.tvRecordingStatus);
         tvNote = findViewById(R.id.tvNote);
+        tvSavedNotes = findViewById(R.id.tvSavedNotes);
 
         Log.d(TAG, "Prepare for gestures");
         glassGestureDetector = new GlassGestureDetector(this, this);
@@ -83,73 +80,21 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
         if(ActivityCompat.checkSelfPermission(this,Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED){
             checkPermission();
         }
+    }
 
-        speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        speechRecognizerIntent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        speechRecognizer.setRecognitionListener(new RecognitionListener() {
-            @Override
-            public void onReadyForSpeech(Bundle bundle) {
-
+        if (resultCode == RESULT_OK) {
+            final List<String> results = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+            Log.d(TAG, "results: " + results.toString());
+            if (results != null && results.size() > 0 && !results.get(0).isEmpty()) {
+                updateUI(results.get(0));
             }
-
-            @Override
-            public void onBeginningOfSpeech() {
-                Log.d(TAG, "onBeginningOfSpeech");
-                tvNote.setText("");
-                tvRecordingStatus.setHint("Listening...");
-            }
-
-            @Override
-            public void onRmsChanged(float v) {
-                //Log.d(TAG, "onRmsChanged");
-            }
-
-            @Override
-            public void onBufferReceived(byte[] bytes) {
-                Log.d(TAG, "onBufferReceived");
-
-            }
-
-            @Override
-            public void onEndOfSpeech() {
-                Log.d(TAG, "onEndOfSpeech");
-                imgMic.setImageResource(R.drawable.mic_off);
-                tvRecordingStatus.setText("Processing...");
-
-            }
-
-            @Override
-            public void onError(int i) {
-                Log.d(TAG, "onError " + i);
-                tvRecordingStatus.setText("Tap to record");
-                tvNote.setText("Not recognized");
-
-            }
-
-            @Override
-            public void onResults(Bundle bundle) {
-                Log.d(TAG, "onResults");
-                imgMic.setImageResource(R.drawable.mic_off);
-                ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-                tvNote.setText(data.get(0));
-                Log.d(TAG, "data" + data);
-                tvRecordingStatus.setText("Tap to record");
-            }
-
-            @Override
-            public void onPartialResults(Bundle bundle) {
-                Log.d(TAG, "onPartialResults");
-
-            }
-
-            @Override
-            public void onEvent(int i, Bundle bundle) {
-                Log.d(TAG, "onEvent");
-
-            }
-        });
+        } else {
+            Log.d(TAG, "Result not OK");
+        }
     }
 
     @Override
@@ -166,7 +111,8 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
                 return true;
             case TAP:
                 Log.d(TAG, "tap");
-                toggleRecording();
+                //toggleRecording();
+                requestVoiceRecognition();
                 return true;
             case SWIPE_FORWARD:
                 Log.d(TAG, "swipe forward");
@@ -187,26 +133,24 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
     }
 
     private void saveNote() {
-        Toast.makeText(this, "Saving note: " + tvNote.getText(), Toast.LENGTH_LONG).show();
-    }
+        Toast.makeText(this, "Sparar notering: " + tvNote.getText(), Toast.LENGTH_SHORT).show();
 
-    private void toggleRecording() {
-        Log.d(TAG, "toggleRecording");
-        if(RECORDING_ACTIVE) {
-            Log.d(TAG, "is recording, deactivate");
-            // is recording, deactivate
-            speechRecognizer.stopListening();
-            RECORDING_ACTIVE = false;
-        } else {
-            Log.d(TAG, "startListening");
-            speechRecognizer.startListening(speechRecognizerIntent);
-            imgMic.setImageResource(R.drawable.microphone);
-            tvRecordingStatus.setText("Listening...");
-
-        }
+        CharSequence org = tvSavedNotes.getText();
+        tvSavedNotes.setText(tvNote.getText() + " : " + org);
+        tvNote.setText("");
     }
 
 
+    private void requestVoiceRecognition() {
+        final Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        startActivityForResult(intent, REQUEST_CODE);
+    }
+
+    private void updateUI(String result) {
+        tvNote.setText(result);
+    }
 
     private void checkPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
