@@ -143,8 +143,11 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
 
     private void requestVoiceRecognition() {
         final Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "sv_SE");
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_PREFERENCE, "sv_SE");
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+
         startActivityForResult(intent, REQUEST_CODE);
     }
 

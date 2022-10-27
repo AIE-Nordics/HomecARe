@@ -96,10 +96,12 @@ public class MainActivity extends AppCompatActivity implements GlassGestureDetec
             videoCallToken = extras.getString(TOKEN_KEY);
             //The key argument here must match that used in the other activity
             Log.d(TAG, "videoCallToken received" + videoCallToken);
+            setTokenState(true);
+        } else {
+            videoCallToken = "007eJxTYDj0e/fSNReimKPNc3KVDF+Kd09Iqsuc6Nn+SZ+RI0OUNVmBIcXC2NwiNSkl0cDcwMQw1dIiMdkkOSnVwCLVxDDFwCT19oGo5IZARoZmlRUsjAwQCOJzMyQn5uQk5pUWFacaMTAAAMFeIKA=";
+            setTokenState(true);
         }
 
-
-        setTokenState(false);
 
         // check BT
         if (bluetoothAdapter != null && !bluetoothAdapter.isEnabled()) {
