@@ -59,7 +59,6 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
     private TextView tvRecordingStatus;
     private TextView tvNote;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,7 +67,6 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
         imgMic = findViewById(R.id.imgMic);
         tvRecordingStatus = findViewById(R.id.tvRecordingStatus);
         tvNote = findViewById(R.id.tvNote);
-
 
         Log.d(TAG, "Prepare for gestures");
         glassGestureDetector = new GlassGestureDetector(this, this);
@@ -98,45 +96,57 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
 
             @Override
             public void onBeginningOfSpeech() {
+                Log.d(TAG, "onBeginningOfSpeech");
                 tvNote.setText("");
                 tvRecordingStatus.setHint("Listening...");
             }
 
             @Override
             public void onRmsChanged(float v) {
-
+                //Log.d(TAG, "onRmsChanged");
             }
 
             @Override
             public void onBufferReceived(byte[] bytes) {
+                Log.d(TAG, "onBufferReceived");
 
             }
 
             @Override
             public void onEndOfSpeech() {
+                Log.d(TAG, "onEndOfSpeech");
+                imgMic.setImageResource(R.drawable.mic_off);
+                tvRecordingStatus.setText("Processing...");
 
             }
 
             @Override
             public void onError(int i) {
+                Log.d(TAG, "onError " + i);
+                tvRecordingStatus.setText("Tap to record");
+                tvNote.setText("Not recognized");
 
             }
 
             @Override
             public void onResults(Bundle bundle) {
+                Log.d(TAG, "onResults");
                 imgMic.setImageResource(R.drawable.mic_off);
                 ArrayList<String> data = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 tvNote.setText(data.get(0));
-                tvRecordingStatus.setText("Done listening");
+                Log.d(TAG, "data" + data);
+                tvRecordingStatus.setText("Tap to record");
             }
 
             @Override
             public void onPartialResults(Bundle bundle) {
+                Log.d(TAG, "onPartialResults");
 
             }
 
             @Override
             public void onEvent(int i, Bundle bundle) {
+                Log.d(TAG, "onEvent");
 
             }
         });
@@ -148,8 +158,12 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
     }
 
     public boolean onGesture(GlassGestureDetector.Gesture gesture) {
-        Log.d(TAG, "tap");
+        Log.d(TAG, "onGesture");
         switch (gesture) {
+            case TAP_AND_HOLD:
+                Log.d(TAG, "tap and hold");
+                saveNote();
+                return true;
             case TAP:
                 Log.d(TAG, "tap");
                 toggleRecording();
@@ -172,13 +186,22 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
         }
     }
 
+    private void saveNote() {
+        Toast.makeText(this, "Saving note: " + tvNote.getText(), Toast.LENGTH_LONG).show();
+    }
+
     private void toggleRecording() {
+        Log.d(TAG, "toggleRecording");
         if(RECORDING_ACTIVE) {
+            Log.d(TAG, "is recording, deactivate");
             // is recording, deactivate
             speechRecognizer.stopListening();
             RECORDING_ACTIVE = false;
         } else {
+            Log.d(TAG, "startListening");
             speechRecognizer.startListening(speechRecognizerIntent);
+            imgMic.setImageResource(R.drawable.microphone);
+            tvRecordingStatus.setText("Listening...");
 
         }
     }
@@ -205,7 +228,6 @@ public class MakeNoteActivity extends AppCompatActivity implements GlassGestureD
         Intent intent = new Intent(MakeNoteActivity.this, VideoActivity.class);
         intent.putExtra(TOKEN_KEY, videoCallToken);
         startActivity(intent);
-
     }
 }
 
